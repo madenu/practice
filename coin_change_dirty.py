@@ -1,66 +1,32 @@
-class CoinPath:
-    def __init__(self, denoms=None):
-        if denoms is None:
-            denoms = []
-        self._path = denoms
-        self.hash = self.__hash__()
-
-    @property
-    def count(self):
-        return len(self._path)
-
-    @property
-    def amount(self):
-        return sum(self._path)
-
-    @property
-    def path(self):
-        return list(self._path)
-
-    def update(self, denom):
-        self._path.append(denom)
-
-    def __hash__(self):
-        return int(self.__repr__())
-
-    def __eq__(self, other):
-        return self.hash == other.hash
-
-    def __repr__(self):
-        return "".join([repr(x) for x in sorted(self._path)])
-
-    def __str__(self):
-        return "|".join([str(v) for v in self._path])
-
-
 class Solution:
 
     @staticmethod
     def coinChange(coins, amount) -> int:
-
-        coins_sorted = list(sorted(coins))
-        small_coin = coins_sorted[0]
-
-        if amount < small_coin:
+        if amount == 0:
             return 0
 
-        unvisited = [CoinPath([denom]) for denom in coins_sorted]  # Reverse! Reverse!
-        while unvisited:
-            curr_path = unvisited.pop()
-            remainder = amount - curr_path.amount
-            if curr_path.amount == amount:  # Found a path to amount
-                # from collections import Counter
-                # print(f"Solution found: {Counter(str(curr_path).split('|'))}")
-                return curr_path.count
-            elif curr_path.amount > amount:  # Amount exceeded
+        queue = []
+        visited = set()
+        coins = sorted(coins)
+        queue.append((coins[-1],))
+
+        while queue:
+            source = queue.pop()
+
+            if source in visited:
                 continue
-            elif remainder < small_coin:  # This path leads nowhere
+
+            source_amt = sum(source)
+            visited.add(source)
+            if source_amt > amount:
                 continue
-            elif curr_path.amount < amount:  # Keep looking
-                for denom in [c for c in coins_sorted if c <= remainder]:
-                    new_path = CoinPath(curr_path.path + [denom])  # TODO Refactor so not instantiating every time
-                    if not (new_path in unvisited):
-                        unvisited.append(new_path)
+            elif source_amt == amount:
+                return len(source)
+            elif source_amt < amount:
+                for coin in coins:  # Append vertices s.t. the first path found is guaranteed to be the shortest
+                    adjacent = source + (coin,)
+                    if not ((sum(adjacent) > amount) or (adjacent in visited)):
+                        queue.append(adjacent)
 
         return -1
 
@@ -92,6 +58,9 @@ if __name__ == "__main__":
     actual = sol.coinChange(coins, amount)
     assert actual == expected
 
+    # This test case breaks my algorithm.
+    # Try again with a backtracking algorithm.
+    #
     # coins = [186, 419, 83, 408]
     # amount = 6249
     # expected = 20

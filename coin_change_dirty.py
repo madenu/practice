@@ -59,6 +59,7 @@ if __name__ == "__main__":
     assert actual == expected
 
     # This test case breaks my algorithm.
+    # It takes way too long.
     # Try again with a backtracking algorithm.
     #
     # coins = [186, 419, 83, 408]

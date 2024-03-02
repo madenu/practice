@@ -1,3 +1,4 @@
+# https://leetcode.com/problems/coin-change/description/
 class Solution:
 
     @staticmethod
@@ -5,13 +6,13 @@ class Solution:
         if amount == 0:
             return 0
 
-        queue = []
+        stack = []
         visited = set()
         coins = sorted(coins)
-        queue.append((coins[-1],))
+        stack.append((coins[-1],))
 
-        while queue:
-            source = queue.pop()
+        while stack:
+            source = stack.pop()
 
             if source in visited:
                 continue
@@ -26,7 +27,7 @@ class Solution:
                 for coin in coins:  # Append vertices s.t. the first path found is guaranteed to be the shortest
                     adjacent = source + (coin,)
                     if not ((sum(adjacent) > amount) or (adjacent in visited)):
-                        queue.append(adjacent)
+                        stack.append(adjacent)
 
         return -1
 
@@ -60,7 +61,7 @@ if __name__ == "__main__":
 
     # This test case breaks my algorithm.
     # It takes way too long.
-    # Try again with a backtracking algorithm.
+    # Try again with a CSP algorithm.
     #
     # coins = [186, 419, 83, 408]
     # amount = 6249

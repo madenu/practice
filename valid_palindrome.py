@@ -5,7 +5,7 @@ class Solution:
         s = "".join([c for c in s.lower() if c.isalnum()])
 
         p1, p2 = 0, len(s) - 1
-        while p2 >= 0:
+        while p2 >= len(s) // 2:
             if s[p1] != s[p2]:
                 return False
 

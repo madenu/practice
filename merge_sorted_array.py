@@ -34,5 +34,5 @@ if __name__ == '__main__':
     m = 3
     nums2 = [2, 5, 6]
     n = 3
-
     sol.merge(nums1, m, nums2, n)
+    print(nums1)

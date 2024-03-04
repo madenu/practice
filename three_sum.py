@@ -20,7 +20,7 @@ class Solution:
                 if kk not in cand:
                     result.add(tuple(nums[idx] for idx in tuple(sorted(cand + (kk,)))))
 
-        return result
+        return list(result)
 
 
 if __name__ == '__main__':

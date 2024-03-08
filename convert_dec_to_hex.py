@@ -22,6 +22,8 @@ def convert(num) -> str:
 
 
 def lookup(num) -> str:
+    # PanelView has if statements, but may not have arrays
+    # Hence the if statements
     if num == 0:
         return "0"
     elif num == 1:
